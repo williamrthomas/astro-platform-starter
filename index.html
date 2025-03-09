@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Hub | Simple HTML Games & Apps</title>
+    <meta name="description" content="A collection of simple HTML games and apps">
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js via CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366F1', // Indigo
+                        secondary: '#EC4899', // Pink
+                        dark: '#111827',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 text-gray-900 font-sans">
+    <div x-data="{ 
+        games: [
+            { 
+                id: 'snake', 
+                title: 'Snake Game', 
+                description: 'Classic snake game with modern visuals', 
+                image: 'images/snake.jpg',
+                category: 'game',
+                tags: ['arcade', 'classic']
+            },
+            { 
+                id: 'calculator', 
+                title: 'Calculator', 
+                description: 'Simple calculator app with dark mode', 
+                image: 'images/calculator.jpg',
+                category: 'app',
+                tags: ['utility', 'tool']
+            },
+            { 
+                id: 'memory', 
+                title: 'Memory Match', 
+                description: 'Test your memory with this card matching game', 
+                image: 'images/memory.jpg',
+                category: 'game',
+                tags: ['puzzle', 'brain']
+            }
+        ],
+        filter: 'all',
+        search: '',
+        
+        get filteredGames() {
+            return this.games.filter(game => {
+                // Filter by category
+                if (this.filter !== 'all' && game.category !== this.filter) return false;
+                
+                // Filter by search term
+                if (this.search.trim() !== '') {
+                    const searchLower = this.search.toLowerCase();
+                    return game.title.toLowerCase().includes(searchLower) || 
+                           game.description.toLowerCase().includes(searchLower) ||
+                           game.tags.some(tag => tag.toLowerCase().includes(searchLower));
+                }
+                
+                return true;
+            });
+        }
+    }">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-primary to-secondary text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <svg class="w-10 h-10 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5">
+                        </path>
+                    </svg>
+                    <h1 class="text-2xl font-bold">Arcade Hub</h1>
+                </div>
+                <div class="w-full md:w-auto">
+                    <input x-model="search" type="text" placeholder="Search games & apps..."
+                        class="w-full md:w-64 px-4 py-2 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+            </div>
+        </header>
+
+        <!-- Filter Tabs -->
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-center space-x-2 mb-8">
+                <button @click="filter = 'all'"
+                    :class="filter === 'all' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                    class="px-4 py-2 rounded-full font-medium transition-colors duration-200 shadow-sm">
+                    All
+                </button>
+                <button @click="filter = 'game'"
+                    :class="filter === 'game' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                    class="px-4 py-2 rounded-full font-medium transition-colors duration-200 shadow-sm">
+                    Games
+                </button>
+                <button @click="filter = 'app'"
+                    :class="filter === 'app' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                    class="px-4 py-2 rounded-full font-medium transition-colors duration-200 shadow-sm">
+                    Apps
+                </button>
+            </div>
+
+            <!-- Games Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <template x-for="game in filteredGames" :key="game.id">
+                    <div
+                        class="bg-white rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-105">
+                        <div class="relative pb-2/3">
+                            <img :src="game.image" :alt="game.title" class="absolute h-full w-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start">
+                                <h2 class="text-xl font-bold mb-2" x-text="game.title"></h2>
+                                <span
+                                    :class="game.category === 'game' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'"
+                                    class="text-xs px-2 py-1 rounded-full font-medium" x-text="game.category"></span>
+                            </div>
+                            <p class="text-gray-600 mb-4" x-text="game.description"></p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <template x-for="tag in game.tags" :key="tag">
+                                    <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full"
+                                        x-text="tag"></span>
+                                </template>
+                            </div>
+                            <a :href="'games/' + game.id + '/'"
+                                class="block w-full bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg text-center transition-colors duration-200">
+                                Play Now
+                            </a>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Empty state when no games match filters -->
+                <template x-if="filteredGames.length === 0">
+                    <div class="col-span-full py-12 text-center">
+                        <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                        <h3 class="text-xl font-medium text-gray-900 mb-2">No matches found</h3>
+                        <p class="text-gray-600">Try adjusting your search or filter to find what you're looking for.
+                        </p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-dark text-white mt-12">
+            <div class="container mx-auto px-4 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 Arcade Hub. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.839c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 9.99 9.99 0 01-3.127 1.195 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

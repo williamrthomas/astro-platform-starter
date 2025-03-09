@@ -1,51 +1,126 @@
-# Astro on Netlify Platform Starter
+# Arcade Hub
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+A lightweight, framework-free platform for hosting HTML5 games and web applications. Built with speed, simplicity, and beautiful UX in mind.
 
-A modern starter based on Astro.js, Tailwind, daisyUI, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blob Store).
+![Arcade Hub](https://via.placeholder.com/1200x630/6366F1/FFFFFF?text=Arcade+Hub)
 
-## Astro Commands
+## Features
 
-All commands are run from the root of the project, from a terminal:
+- **Zero Build Step**: Pure HTML, CSS, and JavaScript - no frameworks or build tools required
+- **Responsive Design**: Works beautifully on all devices from mobile to desktop
+- **Fast Loading**: Minimal dependencies for lightning-fast performance
+- **Game Features**: Built-in high score system with local storage
+- **Social Sharing**: Easy sharing of games and scores
+- **Beautiful UI**: Modern, clean interface with smooth animations
+- **Easy to Extend**: Simple structure makes adding new games or apps straightforward
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Getting Started
 
-## Deploying to Netlify
+### Local Development
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter)
+1. Clone this repository:
+   ```
+   git clone https://github.com/yourusername/arcade-hub.git
+   cd arcade-hub
+   ```
 
-## Developing Locally
+2. Serve the files with any static server. For example, using Python:
+   ```
+   python -m http.server
+   ```
+   
+   Or with Node.js:
+   ```
+   npx serve
+   ```
 
-| Prerequisites             |
-| :------------------------ |
-| [Node.js](https://nodejs.org/) v18.14+. |
-| (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
+3. Visit `http://localhost:8000` (or the port shown in your terminal)
 
-1. Clone this repository, then run `npm install` in its root directory.
+### Deployment
 
-2. For the starter to have full functionality locally (e.g. edge functions, blob store), please ensure you have an up-to-date version of Netlify CLI. Run:
+This project is designed to be deployed to Netlify:
+
+1. Push your repository to GitHub
+2. Connect your repository to Netlify
+3. Configure the build settings:
+   - Build command: (leave empty)
+   - Publish directory: `/`
+
+Alternatively, you can deploy to any static hosting service like GitHub Pages, Vercel, or Cloudflare Pages.
+
+## Project Structure
 
 ```
-npm install netlify-cli@latest -g
+arcade-hub/
+├── index.html        # Main landing page
+├── css/
+│   └── style.css     # Custom styles
+├── js/
+│   └── main.js       # Shared JavaScript functionality
+├── images/           # Game thumbnails and assets
+├── games/            # Individual games
+│   ├── snake/        # Example game: Snake
+│   │   └── index.html
+│   └── ...           # Add your own games here
+└── netlify.toml      # Netlify configuration
 ```
 
-3. Link your local repository to the deployed Netlify site. This will ensure you're using the same runtime version for both local development and your deployed site.
+## Adding a New Game
 
-```
-netlify link
+1. Create a new folder in the `games` directory:
+   ```
+   mkdir games/your-game-name
+   ```
+
+2. Create an `index.html` file in your game folder with your game code
+3. To use the built-in high score system, include the main.js file:
+   ```html
+   <script src="/js/main.js"></script>
+   ```
+4. Use the HighScores API in your game:
+   ```javascript
+   // Check if a score is a high score
+   if (HighScores.isHighScore('your-game-id', score)) {
+     // Show high score input form
+     HighScores.showHighScoreForm('your-game-id', score);
+   }
+   
+   // Display high scores
+   HighScores.showHighScores('your-game-id');
+   ```
+5. Add your game to the array in `index.html`
+
+## Customization
+
+### Changing the Theme
+
+Edit the Tailwind configuration in `index.html` to change the primary and secondary colors:
+
+```javascript
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#6366F1',   // Change this for primary color
+        secondary: '#EC4899', // Change this for secondary color
+        dark: '#111827',
+      },
+      // ...
+    }
+  }
+}
 ```
 
-4. Then, run the Astro.js development server via Netlify CLI:
+### Adding Categories
 
-```
-netlify dev
-```
+To add new categories beyond 'game' and 'app', modify the filter buttons in `index.html` and update your game objects with the new category.
 
-If your browser doesn't navigate to the site automatically, visit [localhost:8888](http://localhost:8888).
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Alpine.js](https://alpinejs.dev/) - Lightweight JavaScript framework
+- [Hero Icons](https://heroicons.com/) - Beautiful hand-crafted SVG icons
