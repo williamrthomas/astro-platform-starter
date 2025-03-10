@@ -13,6 +13,7 @@ A lightweight, framework-free platform for hosting HTML5 games and web applicati
 - **Social Sharing**: Easy sharing of games and scores
 - **Beautiful UI**: Modern, clean interface with smooth animations
 - **Easy to Extend**: Simple structure makes adding new games or apps straightforward
+- **Development Tools**: Python-based tools for game creation and management
 
 ## Getting Started
 
@@ -24,17 +25,27 @@ A lightweight, framework-free platform for hosting HTML5 games and web applicati
    cd arcade-hub
    ```
 
-2. Serve the files with any static server. For example, using Python:
+2. Set up the development environment:
    ```
-   python -m http.server
-   ```
+   # JavaScript dependencies
+   npm install
    
-   Or with Node.js:
-   ```
-   npx serve
+   # Python environment (optional, for development tools)
+   python -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
    ```
 
-3. Visit `http://localhost:8000` (or the port shown in your terminal)
+3. Serve the files with any static server:
+   ```
+   # Using the included script
+   npm start
+   
+   # Or with Python
+   python -m http.server
+   ```
+
+4. Visit `http://localhost:8000` (or the port shown in your terminal)
 
 ### Deployment
 
@@ -62,58 +73,92 @@ arcade-hub/
 │   ├── snake/        # Example game: Snake
 │   │   └── index.html
 │   └── ...           # Add your own games here
+├── docs/             # Documentation
+│   ├── design_principles.md       # Design guidelines
+│   ├── game_categories.md         # Game category definitions
+│   ├── game_development_process.md # Development workflow
+│   └── devlog.md                  # Development log
+├── tools/            # Development tools
+│   ├── game_helper.py             # Game scaffolding tool
+│   └── game_idea_generator.py     # Game idea generation
+├── proposals/        # Game proposals
 └── netlify.toml      # Netlify configuration
+```
+
+## Documentation
+
+The project includes comprehensive documentation:
+
+- **Design Principles**: Visual design, code structure, and performance standards
+- **Game Categories**: Defined categories, metadata structure, and tagging system
+- **Game Development Process**: Ideation, development, testing, and publication workflow
+- **Development Log**: Record of project changes and milestones
+
+## Development Tools
+
+### Game Helper Tool
+
+Create a new game scaffold:
+
+```bash
+source venv/bin/activate
+./tools/game_helper.py create tetris "Tetris" puzzle
+```
+
+Register a game in the main registry:
+
+```bash
+./tools/game_helper.py register tetris "Tetris" "Classic block-stacking puzzle game" puzzle --tags puzzle retro classic
+```
+
+### Game Idea Generator
+
+Generate a game idea:
+
+```bash
+source venv/bin/activate
+./tools/game_idea_generator.py --category arcade --print
 ```
 
 ## Adding a New Game
 
-1. Create a new folder in the `games` directory:
+1. Generate a game idea (optional):
    ```
-   mkdir games/your-game-name
+   ./tools/game_idea_generator.py --category puzzle
    ```
 
-2. Create an `index.html` file in your game folder with your game code
-3. To use the built-in high score system, include the main.js file:
-   ```html
-   <script src="/js/main.js"></script>
+2. Create a game scaffold:
    ```
-4. Use the HighScores API in your game:
-   ```javascript
-   // Check if a score is a high score
-   if (HighScores.isHighScore('your-game-id', score)) {
-     // Show high score input form
-     HighScores.showHighScoreForm('your-game-id', score);
-   }
+   ./tools/game_helper.py create your-game-id "Your Game Title" category
+   ```
+
+3. Implement your game in the created files
    
-   // Display high scores
-   HighScores.showHighScores('your-game-id');
+4. Register your game:
    ```
-5. Add your game to the array in `index.html`
+   ./tools/game_helper.py register your-game-id "Your Game Title" "Game description" category --tags tag1 tag2
+   ```
+
+5. For manual setup, see the [Game Development Process](docs/game_development_process.md)
 
 ## Customization
 
 ### Changing the Theme
 
-Edit the Tailwind configuration in `index.html` to change the primary and secondary colors:
+Edit the CSS custom properties in `css/style.css` to change the colors:
 
-```javascript
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        primary: '#6366F1',   // Change this for primary color
-        secondary: '#EC4899', // Change this for secondary color
-        dark: '#111827',
-      },
-      // ...
-    }
-  }
+```css
+:root {
+  --color-primary: #6366F1;
+  --color-secondary: #EC4899;
+  --color-dark: #111827;
+  /* ... */
 }
 ```
 
 ### Adding Categories
 
-To add new categories beyond 'game' and 'app', modify the filter buttons in `index.html` and update your game objects with the new category.
+See the [Game Categories](docs/game_categories.md) documentation for details on adding new game categories.
 
 ## License
 
@@ -122,5 +167,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Acknowledgments
 
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [Alpine.js](https://alpinejs.dev/) - Lightweight JavaScript framework
 - [Hero Icons](https://heroicons.com/) - Beautiful hand-crafted SVG icons
