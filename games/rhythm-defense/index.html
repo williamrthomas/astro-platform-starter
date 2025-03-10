@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm Defense - Arcade Hub</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Game-specific styles */
+        #game-container {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 0 auto;
+            background-color: #111827;
+            border: 2px solid #6366F1;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .controls-info {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls-info h2 {
+            color: #6366F1;
+            margin-top: 0;
+        }
+
+        .controls-info p {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .tower-button {
+            transition: all 0.2s ease;
+        }
+
+        .tower-button:hover {
+            transform: scale(1.05);
+        }
+
+        .control-button {
+            transition: all 0.2s ease;
+        }
+
+        .control-button:hover {
+            opacity: 0.9;
+        }
+
+        #next-wave-button,
+        #restart-button {
+            background-color: #6366F1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #next-wave-button:hover,
+        #restart-button:hover {
+            background-color: #4F46E5;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="/" class="back-button">← Back to Arcade Hub</a>
+        <h1>Rhythm Defense</h1>
+    </header>
+
+    <main>
+        <!-- Game container -->
+        <div id="game-container">
+            <!-- Game canvas will be added here by JavaScript -->
+        </div>
+
+        <!-- Controls explanation -->
+        <div class="controls-info">
+            <h2>How to Play</h2>
+            <p>Rhythm Defense is a unique hybrid of tower defense and rhythm game mechanics.</p>
+            <p>1. Place towers strategically on the grid to defend against waves of enemies</p>
+            <p>2. Activate towers by pressing their number keys (1-4) in sync with the beat</p>
+            <p>3. Perfect timing gives 2x damage, good timing gives 1.5x damage</p>
+            <p>4. Build combos for score multipliers and earn resources by defeating enemies</p>
+            <p>5. Survive all 10 waves to win!</p>
+        </div>
+    </main>
+
+    <!-- Include the shared high score system -->
+    <script src="/js/main.js"></script>
+    <!-- Include game script -->
+    <script src="game.js"></script>
+</body>
+
+</html>

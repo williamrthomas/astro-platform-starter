@@ -1,0 +1,12 @@
+This directory is for game assets like audio files and images.
+
+Expected audio files:
+- background.mp3 - Background music track
+- activate.mp3 - Tower activation sound
+- hit.mp3 - Enemy hit sound
+- defeat.mp3 - Enemy defeat sound
+- perfect.mp3 - Perfect timing sound
+- miss.mp3 - Missed timing sound
+
+These files are referenced in the game.js file but are not included in this implementation.
+You would need to add actual audio files here for a complete implementation.

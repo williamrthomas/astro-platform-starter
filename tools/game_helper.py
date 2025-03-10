@@ -206,7 +206,7 @@ window.addEventListener('load', initGame);
 
 def update_game_registry(game_id, title, description, category, tags=None):
     """
-    Update the game registry in main.js with a new game entry.
+    Update the game registry in index.html with a new game entry.
     
     Args:
         game_id (str): The unique identifier for the game
@@ -221,64 +221,50 @@ def update_game_registry(game_id, title, description, category, tags=None):
     if tags is None:
         tags = []
     
-    # Read the current main.js file
+    # Read the current index.html file
     try:
-        with open("js/main.js", "r") as f:
+        with open("../index.html", "r") as f:
             content = f.read()
     except FileNotFoundError:
-        print("Error: js/main.js not found")
+        print("Error: index.html not found")
         return False
     
-    # Check if GAMES array exists
-    if "const GAMES = [" not in content:
-        print("Error: GAMES array not found in js/main.js")
+    # Check if games array exists in Alpine.js data
+    if "games: [" not in content:
+        print("Error: games array not found in index.html")
         return False
     
-    # Create new game object
-    game_entry = f"""  {{
-    id: "{game_id}",
-    title: "{title}",
-    description: "{description}",
-    category: "{category}",
-    tags: {json.dumps(tags)},
-    thumbnail: "/images/{game_id}.jpg",
-    path: "/games/{game_id}/",
-    difficulty: "medium",
-    controls: {{
-      keyboard: true,
-      mouse: false,
-      touch: true
-    }},
-    author: "Arcade Hub Team",
-    dateAdded: "{datetime.now().strftime('%Y-%m-%d')}",
-    features: ["high-scores"]
-  }}"""
+    # Create new game object in Alpine.js format
+    game_entry = f"""            {{ 
+                id: '{game_id}', 
+                title: '{title}', 
+                description: '{description}', 
+                image: 'images/{game_id}.jpg',
+                category: '{category}',
+                tags: {json.dumps(tags).replace('"', "'")}
+            }}"""
     
     # Find the position to insert the new game
-    games_start = content.find("const GAMES = [")
+    games_start = content.find("games: [")
     if games_start == -1:
-        print("Error: Could not find GAMES array in js/main.js")
+        print("Error: Could not find games array in index.html")
         return False
     
-    # Find the first game entry or the end of the array
-    games_content_start = games_start + len("const GAMES = [")
+    # Find the position after the opening bracket
+    games_content_start = games_start + len("games: [")
     
-    # Check if there are existing games
-    if content[games_content_start:].strip().startswith("{"):
-        # There are existing games, add a comma after the last one
-        game_entry = ",\n" + game_entry
-    
-    # Find the position to insert the new game (after the opening bracket)
-    insert_pos = games_content_start
+    # Add a comma after the new entry if there are existing games
+    if content[games_content_start:].strip():
+        game_entry = game_entry + ","
     
     # Create the new content
-    new_content = content[:insert_pos] + game_entry + content[insert_pos:]
+    new_content = content[:games_content_start] + "\n" + game_entry + content[games_content_start:]
     
     # Write the updated content back to the file
-    with open("js/main.js", "w") as f:
+    with open("../index.html", "w") as f:
         f.write(new_content)
     
-    print(f"✓ Game '{title}' added to the registry in js/main.js")
+    print(f"✓ Game '{title}' added to the registry in index.html")
     return True
 
 
