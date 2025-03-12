@@ -14,6 +14,7 @@ A lightweight, framework-free platform for hosting HTML5 games and web applicati
 - **Beautiful UI**: Modern, clean interface with smooth animations
 - **Easy to Extend**: Simple structure makes adding new games or apps straightforward
 - **Development Tools**: Python-based tools for game creation and management
+- **Testing Framework**: Comprehensive Jest and Python unittest setup for quality assurance
 
 ## Getting Started
 
@@ -82,6 +83,10 @@ arcade-hub/
 │   ├── game_helper.py             # Game scaffolding tool
 │   └── game_idea_generator.py     # Game idea generation
 ├── proposals/        # Game proposals
+├── tests/            # Testing framework
+│   ├── README.md     # Detailed documentation on the testing framework
+│   ├── js/           # JavaScript tests for frontend components
+│   └── python/       # Python tests for development tools
 └── netlify.toml      # Netlify configuration
 ```
 
@@ -119,6 +124,46 @@ Generate a game idea:
 source venv/bin/activate
 ./tools/game_idea_generator.py --category arcade --print
 ```
+
+## Testing
+
+The project includes a comprehensive testing framework for both JavaScript and Python components:
+
+### Running Tests
+
+You can run all tests with a single command:
+
+```bash
+# Make sure your virtual environment is activated
+source venv/bin/activate
+
+# Run all tests
+./run_tests.py
+```
+
+To run only JavaScript tests:
+
+```bash
+npm test
+# or
+./run_tests.py --js-only
+```
+
+To run only Python tests:
+
+```bash
+./run_tests.py --python-only
+```
+
+### Test Structure
+
+- `tests/js/`: JavaScript tests for frontend components
+- `tests/python/`: Python tests for development tools
+- `tests/README.md`: Detailed documentation on the testing framework
+
+### Adding New Tests
+
+See the [Testing Documentation](tests/README.md) for details on adding new tests.
 
 ## Adding a New Game
 
